@@ -73,7 +73,6 @@ class Grid:
 
     def next_generation(self):
         """ generate grid for the next generation of cells """
-        copy_of_grid = deepcopy(self._grid)
         cells_to_change = []
         for row_of_cells in self._grid:
             for cell in row_of_cells:
@@ -82,8 +81,6 @@ class Grid:
  
         for cell in cells_to_change:
            self._grid[cell.x][cell.y].toggle_state()
-
-        #self._grid = copy_of_grid
 
     def in_bounds(self, x, y):
         size = self._size
