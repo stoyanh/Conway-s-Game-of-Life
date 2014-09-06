@@ -45,10 +45,10 @@ class Game(QtGui.QDialog):
         selected_pattern = str(self._patterns_list.currentText())
 
         if action == "Start":
-            self._world_view.set_pattern_from_tuple((1, 2, 3, 4, 30, 10, 15, 30, 50, 100))
+            self._world_view.set_pattern_from_tuple((0, 1, 2))#, 4, 30, 10, 15, 30, 50, 100))
             self._world_view.start()
             self._start_button.setText("Stop")
-            
+
 
 def main():
     app = QtGui.QApplication(sys.argv)

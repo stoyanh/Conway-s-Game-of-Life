@@ -56,6 +56,10 @@ class WorldConsoleView:
         return self._world
 
     def show(self):
+        print(self.grid_console_repr())
+
+    def grid_console_repr(self):
+        grid = ""
         end_of_line = self._world.size - 1
         counter = 0
         row = ""
@@ -64,17 +68,18 @@ class WorldConsoleView:
             if cell.is_alive():
                 row += "X "
             else:
-                row += '. '
+                row += ". "
 
             if counter == end_of_line:
-                row += '\n'
-                print(row)
+                row += "\n"
+                grid += row
                 row = ""
                 counter = 0
             else:
                 counter += 1
 
-        print("\n")
+        grid += "\n"
+        return grid
 
     def run_game(self):
         while True:
@@ -97,7 +102,7 @@ class WorldGraphicsView(QtGui.QGraphicsView):
         self._world.set_pattern_from_tuple(tuple)
 
     def start(self):
-        self._timer.start(500)
+        self._timer.start(2000)
 
     def pause(self):
         self._timer.stop()
@@ -143,14 +148,11 @@ class WorldGraphicsView(QtGui.QGraphicsView):
         self._scene.clear()
 
 
-
-'''
 def main():
-    board = WorldBoard(10)
-    board.set_pattern_from_tuple((1, 2, 3, 4, 30, 10, 15, 30, 50, 100))
+    board = WorldBoard(5)
+    board.set_pattern_from_tuple((0, 3, 6, 7))# 4, 30, 10, 15, 30, 50, 100))
     representation = WorldConsoleView(board)
     representation.run_game()
 
 if __name__ == '__main__':
     main()
-'''

@@ -5,7 +5,7 @@ class Cell:
         self._x = x
         self._y = y
         self._coords = (x, y)
-        self._alive = False
+        self._alive = alive
 
     @property
     def coords(self):
@@ -36,7 +36,7 @@ class Grid:
     def __init__(self, size):
         self._size = size
         self._grid = []
-        self.make_blank_grid()
+        self._make_blank_grid()
 
     def __iter__(self):
         for row_of_cells in self._grid:
@@ -49,7 +49,7 @@ class Grid:
     def get_cell_at(self, x, y):
         return self._grid[x][y]
 
-    def make_blank_grid(self):
+    def _make_blank_grid(self):
         self._grid = [[Cell(x, y) for y in range(self._size)] for x in range(self._size)]
 
     def should_change(self, cell):
