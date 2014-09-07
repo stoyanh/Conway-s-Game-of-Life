@@ -1,5 +1,5 @@
 from models import Cell, Grid
-from controllers import WorldBoard, WorldConsoleView
+from controllers import WorldBoard, WorldConsoleView, WorldGraphicsView
 import unittest
 
 class CellTesting(unittest.TestCase):
@@ -150,7 +150,11 @@ class ConsoleViewTesting(unittest.TestCase):
 		true_result = ".XX.\nX..\n..."
 		self.assertTrue(console_view.grid_console_repr(), true_result)
 
-	
+
+class GraphicsViewTesting(unittest.TestCase):
+	def test_draw_cell_at_method(self):
+		graphics_view = WorldGraphicsView(WorldBoard(3))
+		graphics_view.draw_cell_at(0, 0)
 
 if __name__ == '__main__':
 	unittest.main()

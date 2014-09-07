@@ -1,12 +1,13 @@
 import sys
-
-from controllers import WorldGraphicsView, WorldBoard
+from controllers import WorldGraphicsView, WorldBoard, GameConstants
 from PyQt4 import QtGui, QtCore
+import os
 
 class Game(QtGui.QDialog):
     def __init__(self, world, parent=None):
         super(Game, self).__init__(parent)
         self._world_view = WorldGraphicsView(world)
+        self_available_patterns = {}
 
         """ the layout of the dialog window """
         layout = QtGui.QVBoxLayout()
@@ -37,22 +38,52 @@ class Game(QtGui.QDialog):
         self.setWindowTitle("Conway's Game of Life")
 
 
+    def load_pattern(self, pattern):
+        patterns_dir = os.path.abspath(os.path.join(
+                os.path.dirname(__file__), "patterns"))
+
+        file_name = os.path.join(patterns_dir, pattern)
+        pattern_as_tuple = ()
+        lines = []
+        try:
+            with open(file_name, "r") as file:
+                lines = [char for row in file.readlines() for char in row]
+                lines = [char for char in lines if char != "\n"]
+                for index in range(len(lines)):
+                    if lines[index] == "X":
+                        pattern_as_tuple += (index,)
+        except IOError:
+            print("Error in reading file! ") 
+
+        return pattern_as_tuple
+
+
     def add_available_patterns(self):
-        pass
+        patterns_dir = os.path.abspath(os.path.join(
+            os.path.dirname(__file__), "patterns"))
+
+        for pattern in os.listdir(patterns_dir):
+            self._patterns_list.addItem(pattern)
 
     def start_animation(self):
         action = self._start_button.text()
         selected_pattern = str(self._patterns_list.currentText())
 
         if action == "Start":
-            self._world_view.set_pattern_from_tuple((0, 1, 2))#, 4, 30, 10, 15, 30, 50, 100))
-            self._world_view.start()
-            self._start_button.setText("Stop")
+            if not selected_pattern == "None":
+                pattern = self.load_pattern(selected_pattern)
+                self._world_view.set_pattern_from_tuple(pattern)
+                self._world_view.start()
+                self._start_button.setText("Stop")
+
+        elif action == "Stop":
+            self._world_view.pause()
+            self._start_button.setText("Start")
 
 
 def main():
     app = QtGui.QApplication(sys.argv)
-    game = Game(WorldBoard(10))
+    game = Game(WorldBoard(GameConstants.grid_size))
     game.show()
     app.exec()
 

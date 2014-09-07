@@ -8,7 +8,7 @@ import tkinter as tk
 
 
 class GameConstants:
-    grid_size = 30
+    grid_size = 20
     time_between_reproduction = 1
     cell_size = 1
 
@@ -117,7 +117,7 @@ class WorldGraphicsView(QtGui.QGraphicsView):
     def draw_cells(self):
         for cell in self._world:
             if cell.is_alive():
-                self.draw_cell_at(cell.x, cell.y)
+                self.draw_cell_at(cell.y, cell.x)
 
     def paint_world(self):
         self.clear_world()
@@ -127,7 +127,7 @@ class WorldGraphicsView(QtGui.QGraphicsView):
 
     """ draws the 2D grid where the game will take place"""
     def draw_world(self):
-        rows = 30
+        rows = GameConstants.grid_size
         columns = rows
         """ set rect with the size of the world's board """
         self._scene.setSceneRect(QtCore.QRectF(0, 0, rows, columns))
@@ -150,7 +150,7 @@ class WorldGraphicsView(QtGui.QGraphicsView):
 
 def main():
     board = WorldBoard(5)
-    board.set_pattern_from_tuple((0, 3, 6, 7))# 4, 30, 10, 15, 30, 50, 100))
+    board.set_pattern_from_tuple((0, 1, 2))# 4, 30, 10, 15, 30, 50, 100))
     representation = WorldConsoleView(board)
     representation.run_game()
 
